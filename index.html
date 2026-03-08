@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pippin NFT</title>
+    <meta name="description"
+        content="Pippin is a 3333 piece, high-end 3D art collection built with obsession for detail, consistency, and character. Every Pippin is designed to feel premium — from silhouette and materials to lighting and personality. This is curated, handcrafted-feeling generative art on Ethereum — and we’re just getting started." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Clash Display + General Sans — from Fontshare -->
+    <link
+        href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&f[]=general-sans@400,500,600,700&display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+
+
+    <!-- NAVIGATION -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-logo-wrap">
+                <img src="https://xzkbbgbsnkocirthyuei.supabase.co/storage/v1/object/public/assets/branding/pippin-web.svg"
+                    class="nav-logo-icon" alt="Pippin Logo">
+                <span class="nav-logo">Pippin NFT</span>
+            </a>
+
+            <div class="nav-right-group">
+                <div class="nav-links-pilled">
+                    <a href="index.html" class="nav-link active">Home</a>
+                    <a href="explore.html" class="nav-link">Explore</a>
+                    <span class="nav-link nav-link-disabled" data-tooltip="Coming Soon">Collaborations</span>
+                    <a href="about.html" class="nav-link">About</a>
+                </div>
+                <div class="nav-social-icons">
+                    <a href="https://opensea.io/collection/pippinnft" target="_blank" class="nav-social-btn opensea-btn"
+                        aria-label="OpenSea">
+                        <svg viewBox="0 0 360 360" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M181.6 0C80.9-.8-.8 80.9 0 181.6c.8 97.7 80.7 177.6 178.4 178.4 100.7.9 182.4-80.9 181.6-181.6C359.2 80.7 279.3.8 181.6 0Zm-53.9 89.6c11.5 14.6 18.4 33.2 18.4 53.2 0 17.4-5.2 33.6-14 47.2H69.7l58-100.4ZM318 199.2v13c0 .8-.4 1.5-1.2 1.9-4.2 1.8-18.2 8.3-24 16.3-15 20.9-26.4 53.6-52 53.6H134.2c-37.8 0-69.4-30-69.3-69.9 0-1 .8-1.8 1.8-1.8h50.5c1.8 0 3.1 1.4 3.1 3.1v9.8c0 5.2 4.2 9.4 9.4 9.4h38.3v-22.3h-26.2c15.1-19.1 24-43.2 24-69.4 0-29.2-11.2-55.9-29.6-75.9 11.1 1.3 21.7 3.5 31.7 6.4v-6.2c0-6.4 5.2-11.7 11.7-11.7 6.4 0 11.7 5.2 11.7 11.7v15c35.8 16.7 59.2 44.4 59.2 75.8 0 18.4-8 35.5-21.9 49.9-2.7 2.8-6.4 4.3-10.2 4.3h-27.1v22.3H225.4c7.3 0 20.4-13.9 26.7-22.3 0 0 .3-.4 1-.6.7-.2 62.4-14.4 62.4-14.4 1.3-.4 2.6.6 2.6 1.9Z" />
+                        </svg>
+                    </a>
+                    <a href="https://x.com/pippin_nft" target="_blank" class="nav-social-btn twitter-btn"
+                        aria-label="X / Twitter">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                        </svg>
+                    </a>
+                    <a href="https://discord.com/invite/2yHd2JPK6Z" target="_blank" class="nav-social-btn discord-btn"
+                        aria-label="Discord">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057.101 18.08.102 18.103.104 18.125a19.876 19.876 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14 14 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <button class="nav-mobile-toggle" id="mobileToggle" onclick="toggleMobileMenu()">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="index.html" class="mobile-link active">Home</a>
+            <a href="explore.html" class="mobile-link">Explore</a>
+            <span class="mobile-link nav-link-disabled" data-tooltip="Coming Soon"
+                style="border-bottom: 1px solid rgba(255, 255, 255, 0.06); padding: 0.6rem 0;">Collaborations</span>
+            <a href="about.html" class="mobile-link">About</a>
+            <div
+                style="display:flex;gap:0.75rem;margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,0.08);">
+                <a href="https://opensea.io/collection/pippinnft" target="_blank" class="nav-social-btn opensea-btn"
+                    aria-label="OpenSea" style="width:44px;height:44px;"><svg viewBox="0 0 360 360" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M181.6 0C80.9-.8-.8 80.9 0 181.6c.8 97.7 80.7 177.6 178.4 178.4 100.7.9 182.4-80.9 181.6-181.6C359.2 80.7 279.3.8 181.6 0Zm-53.9 89.6c11.5 14.6 18.4 33.2 18.4 53.2 0 17.4-5.2 33.6-14 47.2H69.7l58-100.4ZM318 199.2v13c0 .8-.4 1.5-1.2 1.9-4.2 1.8-18.2 8.3-24 16.3-15 20.9-26.4 53.6-52 53.6H134.2c-37.8 0-69.4-30-69.3-69.9 0-1 .8-1.8 1.8-1.8h50.5c1.8 0 3.1 1.4 3.1 3.1v9.8c0 5.2 4.2 9.4 9.4 9.4h38.3v-22.3h-26.2c15.1-19.1 24-43.2 24-69.4 0-29.2-11.2-55.9-29.6-75.9 11.1 1.3 21.7 3.5 31.7 6.4v-6.2c0-6.4 5.2-11.7 11.7-11.7 6.4 0 11.7 5.2 11.7 11.7v15c35.8 16.7 59.2 44.4 59.2 75.8 0 18.4-8 35.5-21.9 49.9-2.7 2.8-6.4 4.3-10.2 4.3h-27.1v22.3H225.4c7.3 0 20.4-13.9 26.7-22.3 0 0 .3-.4 1-.6.7-.2 62.4-14.4 62.4-14.4 1.3-.4 2.6.6 2.6 1.9Z"
+                            fill="currentColor" />
+                    </svg></a>
+                <a href="https://x.com/pippin_nft" target="_blank" class="nav-social-btn twitter-btn" aria-label="X"
+                    style="width:44px;height:44px;"><svg viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                    </svg></a>
+                <a href="https://discord.com/invite/2yHd2JPK6Z" target="_blank" class="nav-social-btn discord-btn"
+                    aria-label="Discord" style="width:44px;height:44px;"><svg viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057.101 18.08.102 18.103.104 18.125a19.876 19.876 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14 14 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z" />
+                    </svg></a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="hero" id="hero">
+        <div class="hero-overlay" aria-hidden="true"></div>
+        <div class="hero-content">
+
+            <h1 class="hero-title">
+                Meet the<br />
+                <span class="hero-title-accent">Pippins.</span>
+            </h1>
+            <p class="hero-subtitle">
+                Pippin is a 3333 piece, high-end 3D art collection built with obsession for detail, consistency, and
+                character. Every Pippin is designed to feel premium — from silhouette and materials to lighting and
+                personality. This is curated, handcrafted-feeling generative art on Ethereum — and we’re just getting
+                started.
+            </p>
+            <div class="hero-ctas">
+                <a href="explore.html" class="btn-primary" id="heroCTAExplore">
+                    Explore Collection
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.5">
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
+                </a>
+                <a href="about.html" class="btn-ghost" id="heroCTAAbout">Learn More</a>
+            </div>
+            <div class="hero-stats">
+                <div class="stat">
+                    <span class="stat-num" data-target="3333">0</span>
+                    <span class="stat-label">Total Supply</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat">
+                    <span class="stat-num" data-target="170">0</span>
+                    <span class="stat-label">Unique Traits</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SOCIAL CARDS SECTION -->
+    <section class="social-section">
+        <div class="social-cards">
+            <a href="https://x.com/pippin_nft" target="_blank" class="social-card" id="twitterCard">
+                <div class="social-logo-wrap x-logo">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                    </svg>
+                </div>
+            </a>
+            <a href="https://discord.com/invite/2yHd2JPK6Z" target="_blank" class="social-card" id="discordCard">
+                <div class="social-logo-wrap discord-logo">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057.101 18.103.104 18.125a19.876 19.876 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14 14 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z" />
+                    </svg>
+                </div>
+            </a>
+            <a href="https://opensea.io/collection/pippinnft" target="_blank" class="social-card" id="openseaCard">
+                <div class="social-logo-wrap opensea-logo">
+                    <svg viewBox="0 0 360 360" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M181.6 0C80.9-.8-.8 80.9 0 181.6c.8 97.7 80.7 177.6 178.4 178.4 100.7.9 182.4-80.9 181.6-181.6C359.2 80.7 279.3.8 181.6 0Zm-53.9 89.6c11.5 14.6 18.4 33.2 18.4 53.2 0 17.4-5.2 33.6-14 47.2H69.7l58-100.4ZM318 199.2v13c0 .8-.4 1.5-1.2 1.9-4.2 1.8-18.2 8.3-24 16.3-15 20.9-26.4 53.6-52 53.6H134.2c-37.8 0-69.4-30-69.3-69.9 0-1 .8-1.8 1.8-1.8h50.5c1.8 0 3.1 1.4 3.1 3.1v9.8c0 5.2 4.2 9.4 9.4 9.4h38.3v-22.3h-26.2c15.1-19.1 24-43.2 24-69.4 0-29.2-11.2-55.9-29.6-75.9 11.1 1.3 21.7 3.5 31.7 6.4v-6.2c0-6.4 5.2-11.7 11.7-11.7 6.4 0 11.7 5.2 11.7 11.7v15c35.8 16.7 59.2 44.4 59.2 75.8 0 18.4-8 35.5-21.9 49.9-2.7 2.8-6.4 4.3-10.2 4.3h-27.1v22.3H225.4c7.3 0 20.4-13.9 26.7-22.3 0 0 .3-.4 1-.6.7-.2 62.4-14.4 62.4-14.4 1.3-.4 2.6.6 2.6 1.9Z" />
+                    </svg>
+                </div>
+            </a>
+
+        </div>
+    </section>
+
+    <!-- ABOUT PREVIEW SECTION -->
+    <section class="about-preview" id="aboutPreview">
+        <div class="about-prev-inner">
+            <div class="about-prev-text">
+                <div class="section-tag">✦ What is Pippin?</div>
+                <h2 class="section-title">
+                    Tiny creatures.<br />
+                    <span class="accent-yellow">Infinite stories.</span>
+                </h2>
+                <p class="section-body">
+                    Pippin is an art-first NFT project born from a love of character design, storytelling, and the magic
+                    of tiny things. Each Pippin is a hand-crafted 3D character with its own personality — forged from
+                    over 200 meticulously sculpted traits.
+                </p>
+                <p class="section-body">
+                    No two are alike. Every Pippin carries a vibe, a look, and a legacy. They're not just collectibles —
+                    they're companions.
+                </p>
+                <a href="about.html" class="btn-primary" id="aboutPreviewCTA">
+                    Discover the Lore
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.5">
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
+                </a>
+            </div>
+            <div class="about-prev-visual">
+                <div class="about-img-wrap">
+                    <img src="images/love.jpeg" alt="Pippin Love" class="about-collection-img" />
+                    <div class="about-img-glow"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- EXPLORE PREVIEW SECTION -->
+    <section class="explore-preview" id="explorePreview">
+        <div class="explore-prev-header">
+            <div class="header-left">
+                <div class="section-tag section-tag-subtle">✦ THE COLLECTION</div>
+            </div>
+            <div class="header-center">
+                <h2 class="section-title">Meet some<br /><span class="hero-title-accent">Pippins.</span></h2>
+            </div>
+            <div class="header-right">
+                <a href="explore.html" class="btn-ghost" id="viewAllBtn">View All →</a>
+            </div>
+        </div>
+        <div class="slider-container">
+            <div class="slider-track" id="sliderTrack">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ SECTION -->
+    <section class="faq-section" id="faqSection">
+        <div class="faq-inner">
+            <div class="section-tag">✦ Questions</div>
+            <h2 class="section-title">FAQ<span class="accent-yellow">'s</span></h2>
+            <div class="faq-list">
+                <div class="faq-item" onclick="toggleFaq(this)" id="faq1">
+                    <div class="faq-q">
+                        <span>What is the Pippin NFT Collection?</span>
+                        <div class="faq-arrow">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5">
+                                <path d="M9 18l6-6-6-6" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="faq-a">
+                        <p>The Pippin NFT Collection is a limited edition set of 3333 unique 3D characters. Each
+                            character is generated from over 200 hand-crafted traits, making each Pippin entirely
+                            one-of-a-kind. This is the founding collection of the Pippin universe.</p>
+                    </div>
+                </div>
+                <div class="faq-item" onclick="toggleFaq(this)" id="faq2">
+                    <div class="faq-q">
+                        <span>What blockchain is Pippin on?</span>
+                        <div class="faq-arrow">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5">
+                                <path d="M9 18l6-6-6-6" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="faq-a">
+                        <p>Pippin is built on Ethereum. NFTs are ERC-721 tokens stored permanently on-chain. All
+                            metadata is stored on IPFS to ensure permanent decentralized storage of your Pippin.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer" id="footer">
+        <div class="footer-inner">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <div class="footer-logo">Pippin NFT</div>
+                    <p class="footer-tagline">A universe of tiny legends.<br />Hand-crafted. Fully on-chain.</p>
+                    <div class="footer-socials">
+                        <a href="https://x.com/pippin_nft" class="footer-social-link" aria-label="Twitter"
+                            target="_blank">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                            </svg>
+                        </a>
+                        <a href="https://discord.com/invite/2yHd2JPK6Z" class="footer-social-link" aria-label="Discord"
+                            target="_blank">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057.101 18.103.104 18.125a19.876 19.876 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14 14 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z" />
+                            </svg>
+                        </a>
+                        <a href="https://opensea.io/collection/pippinnft" class="footer-social-link"
+                            aria-label="OpenSea" target="_blank">
+                            <svg viewBox="0 0 360 360" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M181.6 0C80.9-.8-.8 80.9 0 181.6c.8 97.7 80.7 177.6 178.4 178.4 100.7.9 182.4-80.9 181.6-181.6C359.2 80.7 279.3.8 181.6 0Zm-53.9 89.6c11.5 14.6 18.4 33.2 18.4 53.2 0 17.4-5.2 33.6-14 47.2H69.7l58-100.4ZM318 199.2v13c0 .8-.4 1.5-1.2 1.9-4.2 1.8-18.2 8.3-24 16.3-15 20.9-26.4 53.6-52 53.6H134.2c-37.8 0-69.4-30-69.3-69.9 0-1 .8-1.8 1.8-1.8h50.5c1.8 0 3.1 1.4 3.1 3.1v9.8c0 5.2 4.2 9.4 9.4 9.4h38.3v-22.3h-26.2c15.1-19.1 24-43.2 24-69.4 0-29.2-11.2-55.9-29.6-75.9 11.1 1.3 21.7 3.5 31.7 6.4v-6.2c0-6.4 5.2-11.7 11.7-11.7 6.4 0 11.7 5.2 11.7 11.7v15c35.8 16.7 59.2 44.4 59.2 75.8 0 18.4-8 35.5-21.9 49.9-2.7 2.8-6.4 4.3-10.2 4.3h-27.1v22.3H225.4c7.3 0 20.4-13.9 26.7-22.3 0 0 .3-.4 1-.6.7-.2 62.4-14.4 62.4-14.4 1.3-.4 2.6.6 2.6 1.9Z" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-links-group">
+                    <h4>Navigate</h4>
+                    <a href="index.html">Home</a>
+                    <a href="about.html">About</a>
+                    <a href="explore.html">Explore Collection</a>
+                    <span class="footer-link-disabled" data-tooltip="Coming Soon">Collaborations</span>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>© 2026 Pippin NFT. All rights reserved.</span>
+                <span>Built with ❤️ for the community</span>
+            </div>
+        </div>
+    </footer>
+
+
+
+    <script src="main.js"></script>
+</body>
+
+</html>

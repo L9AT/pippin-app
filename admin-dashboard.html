@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pippin Collabs Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f9fafb;
+            margin: 0;
+            color: #111827;
+        }
+
+        .navbar {
+            background: white;
+            padding: 1.25rem 2rem;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            top: 0;
+            position: sticky;
+            z-index: 100;
+        }
+
+        .navbar h1 {
+            margin: 0;
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .btn-logout {
+            background: transparent;
+            border: 1px solid #4671b1;
+            color: #4b5563;
+            padding: 0.5rem 1.25rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .btn-logout:hover {
+            background: #f3f4f6;
+            color: #111827;
+        }
+
+        .btn-primary {
+            background: #c084fc;
+            color: white;
+            border: none;
+            padding: 0.6rem 1.25rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .btn-primary:hover {
+            background: #a855f7;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 1rem;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #6b7280;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+        }
+
+        .tab-btn.active {
+            color: #c084fc;
+            border-bottom: 2px solid #c084fc;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2.5rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .header-row h2 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .table-wrap {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 1rem 1.5rem;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+            vertical-align: middle;
+        }
+
+        th {
+            background: #f9fafb;
+            font-weight: 600;
+            color: #6b7280;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background: #f9fafb;
+        }
+
+        .thumb {
+            width: 48px;
+            height: 48px;
+            border-radius: 6px;
+            object-fit: cover;
+            background: #f3f4f6;
+            display: block;
+        }
+
+        .collab-name {
+            font-weight: 600;
+            color: #111827;
+            display: block;
+            margin-bottom: 0.2rem;
+        }
+
+        .collab-slug {
+            color: #6b7280;
+            font-size: 0.85rem;
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .status-live {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-soon {
+            background: #fef9c3;
+            color: #854d0e;
+        }
+
+        .status-closed {
+            background: #f3f4f6;
+            color: #4b5563;
+        }
+
+        .status-pending {
+            background: #e0e7ff;
+            color: #4f46e5;
+        }
+
+        .status-approved {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-rejected {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .actions button {
+            background: none;
+            border: none;
+            padding: 0.4rem 0.6rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+        }
+
+        .btn-edit {
+            color: #4f46e5;
+            margin-right: 0.5rem;
+        }
+
+        .btn-edit:hover {
+            background: #e0e7ff;
+        }
+
+        .btn-delete {
+            color: #dc2626;
+        }
+
+        .btn-delete:hover {
+            background: #fee2e2;
+        }
+
+        .btn-approve {
+            color: #16a34a;
+            margin-right: 0.5rem;
+        }
+
+        .btn-reject {
+            color: #dc2626;
+            margin-right: 0.5rem;
+        }
+
+        .btn-draw {
+            color: #d946ef;
+            margin-right: 0.5rem;
+        }
+
+        .btn-draw:hover {
+            background: #fdf4ff;
+        }
+
+        .winners-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .winners-table th,
+        .winners-table td {
+            text-align: left;
+            padding: 0.75rem;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 0.875rem;
+        }
+
+        .winners-table th {
+            font-weight: 600;
+            color: #6b7280;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+        }
+
+        .winner-gtd {
+            color: #166534;
+            background: #dcfce7;
+            padding: 0.15rem 0.5rem;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .winner-wl {
+            color: #4f46e5;
+            background: #e0e7ff;
+            padding: 0.15rem 0.5rem;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .score-filter {
+            padding: 0.5rem;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(17, 24, 39, 0.6);
+            backdrop-filter: blur(4px);
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            width: 100%;
+            max-width: 650px;
+            border-radius: 12px;
+            padding: 2rem;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #9ca3af;
+            line-height: 1;
+        }
+
+        .close-btn:hover {
+            color: #111827;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.25rem 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 0;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.4rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #374151;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 0.6rem 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: border-color 0.2s;
+            box-sizing: border-box;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #c084fc;
+            box-shadow: 0 0 0 3px rgba(192, 132, 252, 0.1);
+        }
+
+        .file-hint {
+            display: block;
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-top: 0.3rem;
+        }
+
+        .modal-footer {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+
+        .empty-state {
+            padding: 4rem;
+            text-align: center;
+            color: #6b7280;
+        }
+
+        .container {
+            max-width: 1400px;
+            /* Wider for more columns */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="navbar">
+        <h1>Pippin Admin</h1>
+        <button class="btn-logout" id="logoutBtn">Log out</button>
+    </div>
+
+    <div class="container">
+        <div class="tabs">
+            <button class="tab-btn active" id="tabCollabs" onclick="switchTab('collabs')">Live Collaborations</button>
+            <button class="tab-btn" id="tabApps" onclick="switchTab('applications')">Applications</button>
+        </div>
+
+        <!-- COLLABS TAB -->
+        <div id="collabsTab" class="tab-content active">
+            <div class="header-row">
+                <h2>Collaborations Database</h2>
+                <button class="btn-primary" id="openAddModal">Add New Collaboration</button>
+            </div>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th width="80">Banner</th>
+                            <th>Project Name</th>
+                            <th>Status</th>
+                            <th>Mint Date</th>
+                            <th>Spots</th>
+                            <th width="150">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="collabTableBody">
+                        <tr>
+                            <td colspan="6" class="empty-state">Loading collaborations...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- APPLICATIONS TAB -->
+        <div id="applicationsTab" class="tab-content">
+            <div class="header-row">
+                <h2>Partner Applications</h2>
+                <div style="display:flex; gap: 1rem;">
+                    <div>
+                        <label style="display:inline-block; margin-right: 0.5rem; font-weight: 500;">Status:</label>
+                        <select class="score-filter" id="statusFilter" onchange="filterApps()">
+                            <option value="all">All</option>
+                            <option value="pending" selected>Pending</option>
+                            <option value="approved">Approved</option>
+                            <option value="rejected">Rejected</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label style="display:inline-block; margin-right: 0.5rem; font-weight: 500;">Filter by
+                            Score:</label>
+                        <select class="score-filter" id="scoreFilter" onchange="filterApps()">
+                            <option value="all">All Scores</option>
+                            <option value="high">High (> 70)</option>
+                            <option value="medium">Medium (40 - 70)</option>
+                            <option value="low">Low (< 40)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Avatar</th>
+                            <th>Banner</th>
+                            <th>Project Info</th>
+                            <th>Links</th>
+                            <th>Network & Supply</th>
+                            <th>Mint Info</th>
+                            <th>Spots (WL/GTD)</th>
+                            <th>Score</th>
+                            <th>Status</th>
+                            <th>Applied At</th>
+                            <th width="150">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="appTableBody">
+                        <tr>
+                            <td colspan="11" class="empty-state">Loading applications...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Modal -->
+    <div class="modal" id="collabModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Add Collaboration</h2>
+                <button class="close-btn" id="closeModal">&times;</button>
+            </div>
+            <form id="collabForm">
+                <input type="hidden" id="collabId">
+                <div class="form-grid">
+
+                    <div class="form-group full">
+                        <label>Project Name</label>
+                        <input type="text" id="name" required
+                            oninput="document.getElementById('slug').value = this.value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '')">
+                    </div>
+
+                    <div class="form-group full">
+                        <label>URL Slug</label>
+                        <input type="text" id="slug" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Banner Image</label>
+                        <input type="file" id="bannerFile" accept="image/*">
+                        <span class="file-hint">Leave blank to keep existing. Recommended ratio 3:1.</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Logo Image</label>
+                        <input type="file" id="logoFile" accept="image/*">
+                        <span class="file-hint">Leave blank to keep existing. Square transparent PNG.</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select id="status">
+                            <option value="live">Live</option>
+                            <option value="soon">Coming Soon</option>
+                            <option value="closed">Closed</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Mint Date</label>
+                        <input type="text" id="mint_date" placeholder="e.g. Apr 15, 2026">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Total Supply</label>
+                        <input type="text" id="supply" placeholder="e.g. 5,555">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Blockchain</label>
+                        <input type="text" id="chain" placeholder="e.g. Ethereum">
+                    </div>
+
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label>WL Spots Available</label>
+                            <input type="number" id="wl_spots" placeholder="e.g. 50" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label>GTD Spots Available</label>
+                            <input type="number" id="gtd_spots" placeholder="e.g. 10" min="0">
+                        </div>
+                    </div>
+
+                    <div class="form-group full">
+                        <label>Description</label>
+                        <textarea id="description" rows="4"
+                            placeholder="Short description of the project..."></textarea>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-logout" id="cancelModal">Cancel</button>
+                    <button type="submit" class="btn-primary" id="saveBtn">Save Collaboration</button>
+                </div>
+        </div>
+    </div>
+
+    <!-- Winners Modal -->
+    <div class="modal" id="winnersModal">
+        <div class="modal-content" style="max-width: 800px;">
+            <div class="modal-header">
+                <h2>Giveaway Results</h2>
+                <button type="button" class="btn-logout" id="closeWinnersModal"
+                    onclick="document.getElementById('winnersModal').classList.remove('active')">Close</button>
+            </div>
+            <div id="winnersContent" style="max-height: 50vh; overflow-y: auto;">
+                <p>Loading winners or waiting for draw...</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="supabase-config.js"></script>
+    <script src="admin.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pippin NFT — Detail</title>
+    <meta name="description" content="View details, traits, and rarity for this unique Pippin NFT." />
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Clash Display + General Sans — from Fontshare -->
+    <link
+        href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&f[]=general-sans@400,500,600,700&display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap"
+        rel="stylesheet">
+    <style>
+        /* ---- Detail page overrides ---- */
+        body {
+            background: #0a0a10;
+            color: #f5f5f7;
+        }
+
+        .detail-loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 60vh;
+            gap: 1rem;
+            color: rgba(245, 245, 247, 0.4);
+        }
+
+        .detail-loading .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(179, 136, 255, 0.2);
+            border-top-color: #b388ff;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .detail-error {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 60vh;
+            gap: 1.5rem;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .detail-error h2 {
+            font-family: 'Syne', sans-serif;
+            font-size: 2rem;
+            color: #f5f5f7;
+        }
+
+        .detail-error p {
+            color: rgba(245, 245, 247, 0.4);
+            font-size: 1rem;
+        }
+
+        /* Page body */
+        .detail-topbar {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8rem 2rem 0;
+            width: 100%;
+        }
+
+        .back-nav {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #f5f5f7;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.05rem;
+            transition: color 0.2s;
+        }
+
+        .back-nav:hover {
+            color: #b388ff;
+        }
+
+        .topbar-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .token-search-group {
+            display: flex;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            height: 42px;
+        }
+
+        .token-input-small {
+            background: transparent;
+            border: none;
+            padding: 0 1rem;
+            color: #fff;
+            outline: none;
+            width: 140px;
+            font-family: inherit;
+        }
+
+        .token-go-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            padding: 0 1rem;
+            color: #f5f5f7;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .token-go-btn:hover {
+            background: rgba(179, 136, 255, 0.3);
+            color: #fff;
+        }
+
+        .random-btn-small {
+            height: 42px;
+            padding: 0 1.25rem;
+            border-radius: 8px;
+            background: rgba(179, 136, 255, 0.2);
+            color: #b388ff;
+            border: 1px solid rgba(179, 136, 255, 0.4);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .random-btn-small:hover {
+            background: rgba(179, 136, 255, 0.4);
+            color: #fff;
+        }
+
+        .nft-detail-layout {
+            min-height: calc(100vh - 8rem);
+            padding: 2.5rem 2rem 5rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 4.5rem;
+            align-items: start;
+        }
+
+        /* Left — image */
+        .magnify-container {
+            position: relative;
+            width: 100%;
+            max-width: 750px;
+            margin: 0 auto;
+            aspect-ratio: 1 / 1;
+            border-radius: 32px;
+            overflow: hidden;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6);
+            cursor: crosshair;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .magnify-img {
+            max-width: 100%;
+            max-height: 100%;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            object-position: center;
+            display: block;
+        }
+
+        .magnify-lens {
+            position: absolute;
+            width: 250px;
+            height: 250px;
+            border: 3px solid #b388ff;
+            border-radius: 50%;
+            pointer-events: none;
+            display: none;
+            background-repeat: no-repeat;
+            z-index: 10;
+            box-shadow: 0 0 0 6px rgba(0, 0, 0, 0.4), 0 15px 35px rgba(0, 0, 0, 0.5);
+        }
+
+        .nav-arrow-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(245, 245, 247, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 20;
+            transition: all 0.2s ease;
+        }
+
+        .nav-arrow-btn:hover {
+            background: rgba(179, 136, 255, 0.4);
+            border-color: rgba(179, 136, 255, 0.6);
+            color: #fff;
+        }
+
+        .nav-arrow-left {
+            left: 1.5rem;
+        }
+
+        .nav-arrow-right {
+            right: 1.5rem;
+        }
+
+        /* Right — info */
+        .nft-detail-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            padding: 3.5rem;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 32px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .info-header-group {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .detail-divider {
+            width: 100%;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.08);
+            border: none;
+            margin: 0;
+        }
+
+        .nft-detail-info h1 {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(2.2rem, 3.5vw, 3.2rem);
+            font-weight: 800;
+            color: #f5f5f7;
+            line-height: 1.05;
+            margin: 0;
+            letter-spacing: -0.02em;
+        }
+
+        .nft-badge-row {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        /* Trait grid */
+        .trait-grid-wrapper {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .trait-grid-inner {
+            min-height: 220px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .trait-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+            width: 100%;
+        }
+
+        .trait-grid.one-of-one {
+            grid-template-columns: 1fr;
+        }
+
+        .trait-card {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 1rem 1.25rem;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 0.3rem;
+            height: 100%;
+        }
+
+        .trait-card:hover {
+            background: rgba(179, 136, 255, 0.06);
+            border-color: rgba(179, 136, 255, 0.25);
+            transform: translateY(-2px);
+        }
+
+        .trait-key {
+            color: rgba(245, 245, 247, 0.35);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 700;
+        }
+
+        .trait-val {
+            color: #f5f5f7;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-transform: capitalize;
+        }
+
+        /* Magnifier controls panel */
+        .magnifier-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .magnifier-controls-title {
+            font-size: 0.85rem;
+            color: rgba(245, 245, 247, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 800;
+            margin: 0;
+        }
+
+        .magnifier-sliders {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            flex: 1;
+        }
+
+        .control-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+
+        .control-label-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .control-label-row span:first-child {
+            font-size: 0.78rem;
+            color: rgba(245, 245, 247, 0.5);
+        }
+
+        .control-label-row span:last-child {
+            font-size: 0.78rem;
+            color: #b388ff;
+            font-weight: 600;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            accent-color: #b388ff;
+            height: 4px;
+            cursor: pointer;
+        }
+
+        /* Buttons */
+        .detail-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.85rem;
+            width: 100%;
+        }
+
+        .detail-actions .btn-primary {
+            width: 100%;
+            padding: 1.15rem;
+            text-align: center;
+            font-size: 1.05rem;
+            font-weight: 700;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #b388ff 0%, #a855f7 100%);
+            color: #fff;
+            border: none;
+            box-shadow: 0 4px 15px rgba(179, 136, 255, 0.25);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .detail-actions .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(179, 136, 255, 0.4);
+        }
+
+        .detail-actions .btn-ghost {
+            width: 100%;
+            padding: 1.15rem;
+            text-align: center;
+            font-size: 1.05rem;
+            font-weight: 600;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: rgba(245, 245, 247, 0.8);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .detail-actions .btn-ghost:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.15);
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .nft-detail-layout {
+                grid-template-columns: 1fr;
+                padding-top: 6rem;
+                gap: 2.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body class="page-nft-detail">
+
+    <!-- NAVIGATION -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-logo-wrap">
+                <img src="https://xzkbbgbsnkocirthyuei.supabase.co/storage/v1/object/public/assets/branding/pippin-web.svg"
+                    class="nav-logo-icon" alt="Pippin Logo">
+                <span class="nav-logo">Pippin NFT</span>
+            </a>
+            <div class="nav-right-group">
+                <div class="nav-links-pilled">
+                    <a href="index.html" class="nav-link">Home</a>
+                    <a href="explore.html" class="nav-link active">Explore</a>
+                    <span class="nav-link nav-link-disabled" data-tooltip="Coming Soon">Collaborations</span>
+                    <a href="about.html" class="nav-link">About</a>
+                </div>
+                <div class="nav-social-icons">
+                    <a href="https://opensea.io/collection/pippinnft" target="_blank" class="nav-social-btn opensea-btn"
+                        aria-label="OpenSea"><svg viewBox="0 0 360 360" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M181.6 0C80.9-.8-.8 80.9 0 181.6c.8 97.7 80.7 177.6 178.4 178.4 100.7.9 182.4-80.9 181.6-181.6C359.2 80.7 279.3.8 181.6 0Zm-53.9 89.6c11.5 14.6 18.4 33.2 18.4 53.2 0 17.4-5.2 33.6-14 47.2H69.7l58-100.4ZM318 199.2v13c0 .8-.4 1.5-1.2 1.9-4.2 1.8-18.2 8.3-24 16.3-15 20.9-26.4 53.6-52 53.6H134.2c-37.8 0-69.4-30-69.3-69.9 0-1 .8-1.8 1.8-1.8h50.5c1.8 0 3.1 1.4 3.1 3.1v9.8c0 5.2 4.2 9.4 9.4 9.4h38.3v-22.3h-26.2c15.1-19.1 24-43.2 24-69.4 0-29.2-11.2-55.9-29.6-75.9 11.1 1.3 21.7 3.5 31.7 6.4v-6.2c0-6.4 5.2-11.7 11.7-11.7 6.4 0 11.7 5.2 11.7 11.7v15c35.8 16.7 59.2 44.4 59.2 75.8 0 18.4-8 35.5-21.9 49.9-2.7 2.8-6.4 4.3-10.2 4.3h-27.1v22.3H225.4c7.3 0 20.4-13.9 26.7-22.3 0 0 .3-.4 1-.6.7-.2 62.4-14.4 62.4-14.4 1.3-.4 2.6.6 2.6 1.9Z"
+                                fill="currentColor" />
+                        </svg></a>
+                    <a href="https://x.com/pippin_nft" target="_blank" class="nav-social-btn twitter-btn"
+                        aria-label="X / Twitter"><svg viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                        </svg></a>
+                    <a href="https://discord.com/invite/2yHd2JPK6Z" target="_blank" class="nav-social-btn discord-btn"
+                        aria-label="Discord"><svg viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057.101 18.08.102 18.103.104 18.125a19.876 19.876 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14 14 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z" />
+                        </svg></a>
+                </div>
+            </div>
+            <button class="nav-mobile-toggle" id="mobileToggle" onclick="toggleMobileMenu()">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="index.html" class="mobile-link">Home</a>
+            <a href="explore.html" class="mobile-link active">Explore</a>
+            <span class="mobile-link nav-link-disabled" data-tooltip="Coming Soon"
+                style="border-bottom: 1px solid rgba(255, 255, 255, 0.06); padding: 0.6rem 0;">Collaborations</span>
+            <a href="about.html" class="mobile-link">About</a>
+            <div
+                style="display:flex;gap:0.75rem;margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,0.08);">
+                <a href="https://opensea.io/collection/pippinnft" target="_blank" class="nav-social-btn opensea-btn"
+                    style="width:44px;height:44px;"><svg viewBox="0 0 360 360" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M181.6 0C80.9-.8-.8 80.9 0 181.6c.8 97.7 80.7 177.6 178.4 178.4 100.7.9 182.4-80.9 181.6-181.6C359.2 80.7 279.3.8 181.6 0Zm-53.9 89.6c11.5 14.6 18.4 33.2 18.4 53.2 0 17.4-5.2 33.6-14 47.2H69.7l58-100.4ZM318 199.2v13c0 .8-.4 1.5-1.2 1.9-4.2 1.8-18.2 8.3-24 16.3-15 20.9-26.4 53.6-52 53.6H134.2c-37.8 0-69.4-30-69.3-69.9 0-1 .8-1.8 1.8-1.8h50.5c1.8 0 3.1 1.4 3.1 3.1v9.8c0 5.2 4.2 9.4 9.4 9.4h38.3v-22.3h-26.2c15.1-19.1 24-43.2 24-69.4 0-29.2-11.2-55.9-29.6-75.9 11.1 1.3 21.7 3.5 31.7 6.4v-6.2c0-6.4 5.2-11.7 11.7-11.7 6.4 0 11.7 5.2 11.7 11.7v15c35.8 16.7 59.2 44.4 59.2 75.8 0 18.4-8 35.5-21.9 49.9-2.7 2.8-6.4 4.3-10.2 4.3h-27.1v22.3H225.4c7.3 0 20.4-13.9 26.7-22.3 0 0 .3-.4 1-.6.7-.2 62.4-14.4 62.4-14.4 1.3-.4 2.6.6 2.6 1.9Z"
+                            fill="currentColor" />
+                    </svg></a>
+                <a href="https://x.com/pippin_nft" target="_blank" class="nav-social-btn twitter-btn"
+                    style="width:44px;height:44px;"><svg viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                    </svg></a>
+                <a href="https://discord.com/invite/2yHd2JPK6Z" target="_blank" class="nav-social-btn discord-btn"
+                    style="width:44px;height:44px;"><svg viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057.101 18.08.102 18.103.104 18.125a19.876 19.876 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14 14 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z" />
+                    </svg></a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main id="nftDetailRoot">
+        <div class="detail-loading" id="loadingState">
+            <div class="spinner"></div>
+            <span>Gathering details...</span>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <div class="footer-logo">Pippin NFT</div>
+                    <p class="footer-tagline">A universe of tiny legends.<br />Hand-crafted. Fully on-chain.</p>
+                    <div class="footer-socials">
+                        <a href="https://x.com/pippin_nft" class="footer-social-link" aria-label="Twitter"
+                            target="_blank">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                            </svg>
+                        </a>
+                        <a href="https://discord.com/invite/2yHd2JPK6Z" class="footer-social-link" aria-label="Discord"
+                            target="_blank">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057.101 18.08.102 18.103.104 18.125a19.876 19.876 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14 14 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z" />
+                            </svg>
+                        </a>
+                        <a href="https://opensea.io/collection/pippinnft" class="footer-social-link"
+                            aria-label="OpenSea" target="_blank">
+                            <svg viewBox="0 0 360 360" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <g clip-path="url(#clip0_2_57)">
+                                    <g clip-path="url(#clip1_2_57)">
+                                        <path
+                                            d="M252.072 212.292C245.826 220.662 232.686 234.558 225.378 234.558H191.412V212.274H218.466C222.336 212.274 226.026 210.708 228.69 207.954C242.586 193.554 250.614 176.418 250.614 158.04C250.614 126.684 227.178 98.964 191.394 82.26V67.284C191.394 60.84 186.174 55.62 179.73 55.62C173.286 55.62 168.066 60.84 168.066 67.284V73.494C158.04 70.56 147.42 68.328 136.332 67.05C154.692 86.994 165.906 113.67 165.906 142.92C165.906 169.146 156.942 193.23 141.876 212.31H168.066V234.63H129.726C124.542 234.63 120.33 230.436 120.33 225.234V215.478C120.33 213.768 118.944 212.364 117.216 212.364H66.672C65.682 212.364 64.836 213.174 64.836 214.164C64.8 254.088 96.39 284.058 134.172 284.058H240.822C266.382 284.058 277.812 251.298 292.788 230.454C298.602 222.39 312.552 215.91 316.782 214.11C317.556 213.786 318.006 213.066 318.006 212.22V199.26C318.006 197.946 316.71 196.956 315.432 197.316C315.432 197.316 253.782 211.482 253.062 211.68C252.342 211.896 252.072 212.31 252.072 212.31V212.292Z"
+                                            fill="white" />
+                                        <path
+                                            d="M146.16 142.83C146.16 122.724 139.266 104.22 127.746 89.586L69.732 189.972H132.138C141.012 176.436 146.178 160.236 146.178 142.848L146.16 142.83Z"
+                                            fill="white" />
+                                        <path
+                                            d="M181.566 -5.19844e-06C80.91 -0.828005 -0.82799 80.91 1.00604e-05 181.566C0.84601 279.306 80.694 359.172 178.416 359.982C279.072 360.846 360.846 279.072 359.982 178.416C359.172 80.712 279.306 0.845995 181.566 -5.19844e-06ZM127.746 89.586C139.266 104.22 146.16 122.742 146.16 142.83C146.16 160.236 140.994 176.436 132.12 189.954H69.714L127.728 89.568L127.746 89.586ZM318.006 199.242V212.202C318.006 213.048 317.556 213.768 316.782 214.092C312.552 215.892 298.602 222.372 292.788 230.436C277.812 251.28 266.382 284.04 240.822 284.04H134.172C96.408 284.04 64.818 254.07 64.836 214.146C64.836 213.156 65.682 212.346 66.672 212.346H117.216C118.962 212.346 120.33 213.75 120.33 215.46V225.216C120.33 230.4 124.524 234.612 129.726 234.612H168.066V212.292H141.876C156.942 193.212 165.906 169.128 165.906 142.902C165.906 113.652 154.692 86.976 136.332 67.032C147.438 68.328 158.058 70.542 168.066 73.476V67.266C168.066 60.822 173.286 55.602 179.73 55.602C186.174 55.602 191.394 60.822 191.394 67.266V82.242C227.178 98.946 250.614 126.666 250.614 158.022C250.614 176.418 242.568 193.536 228.69 207.936C226.026 210.69 222.336 212.256 218.466 212.256H191.412V234.54H225.378C232.704 234.54 245.844 220.644 252.072 212.274C252.072 212.274 252.342 211.86 253.062 211.644C253.782 211.428 315.432 197.28 315.432 197.28C316.728 196.92 318.006 197.91 318.006 199.224V199.242Z"
+                                            fill="currentColor" />
+                                    </g>
+                                </g>
+                                <defs>
+                                    <clipPath id="clip0_2_57">
+                                        <rect width="360" height="360" fill="white" />
+                                    </clipPath>
+                                    <clipPath id="clip1_2_57">
+                                        <rect width="360" height="360" fill="white" />
+                                    </clipPath>
+                                </defs>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-links-group">
+                    <h4>Navigate</h4>
+                    <a href="index.html">Home</a>
+                    <a href="about.html">About</a>
+                    <a href="explore.html">Explore Collection</a>
+                </div>
+                <div class="footer-links-group">
+                    <h4>Community</h4>
+                    <a href="https://x.com/pippin_nft" target="_blank">Twitter / X</a>
+                    <a href="https://discord.com/invite/2yHd2JPK6Z" target="_blank">Discord</a>
+                    <a href="https://opensea.io/collection/pippinnft" target="_blank">OpenSea</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>© 2026 Pippin NFT. All rights reserved.</span>
+                <span>Built with ❤️ for the community</span>
+            </div>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+
+    <!-- Navbar scroll (standalone, no main.js dependency) -->
+    <script>
+        // Navbar scroll
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (navbar) navbar.classList.toggle('scrolled', window.scrollY > 30);
+        });
+
+        // Mobile menu
+        function toggleMobileMenu() {
+            const m = document.getElementById('mobileMenu');
+            if (m) m.classList.toggle('open');
+        }
+
+        // ---- Rarity badge color map ----
+        const RARITY_COLORS = {
+            mythic: { bg: 'rgba(239,68,68,0.12)', color: '#ef4444', border: 'rgba(239,68,68,0.35)' },
+            legendary: { bg: 'rgba(245,158,11,0.12)', color: '#f59e0b', border: 'rgba(245,158,11,0.35)' },
+            epic: { bg: 'rgba(179,136,255,0.12)', color: '#b388ff', border: 'rgba(179,136,255,0.35)' },
+            rare: { bg: 'rgba(96,165,250,0.12)', color: '#60a5fa', border: 'rgba(96,165,250,0.35)' },
+            uncommon: { bg: 'rgba(52,211,153,0.12)', color: '#34d399', border: 'rgba(52,211,153,0.35)' },
+            common: { bg: 'rgba(255,255,255,0.04)', color: 'rgba(245,245,247,0.6)', border: 'rgba(255,255,255,0.1)' },
+        };
+
+        const BG_MAP = {
+            Pink: '#ffd6e7', Blue: '#c7f2ff', Yellow: '#fff9c4',
+            Purple: '#e9d5ff', Green: '#d1fae5', Cosmic: '#1e1b4b'
+        };
+
+        // Keys to skip in trait display
+        const SKIP_KEYS = new Set(['id', 'name', 'image', 'rarity', 'rank', 'score', '1/1']);
+
+        let currentNftId = null;
+        let isNavigating = false;
+
+        async function navigateToNFT(newId, isPopState = false) {
+            if (isNavigating || newId === currentNftId) return;
+            isNavigating = true;
+
+            if (!isPopState) {
+                history.pushState({}, '', '?id=' + newId);
+            }
+
+            const root = document.getElementById('nftDetailRoot');
+            root.style.transition = 'opacity 0.25s ease, transform 0.25s ease';
+            root.style.opacity = '0';
+            root.style.transform = 'translateY(10px)';
+
+            await new Promise(r => setTimeout(r, 250));
+
+            await loadNFTDetail(newId);
+
+            root.style.transform = 'translateY(0)';
+            root.style.opacity = '1';
+
+            setTimeout(() => {
+                isNavigating = false;
+            }, 250);
+        }
+
+        window.addEventListener('popstate', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const newId = parseInt(urlParams.get('id'));
+            if (newId) navigateToNFT(newId, true);
+        });
+
+        // Keyboard navigation
+        window.addEventListener('keydown', e => {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+            if (!currentNftId || isNavigating) return;
+
+            if (e.key === 'ArrowLeft') {
+                navigateToNFT(currentNftId > 1 ? currentNftId - 1 : 3333);
+            } else if (e.key === 'ArrowRight') {
+                navigateToNFT(currentNftId < 3333 ? currentNftId + 1 : 1);
+            }
+        });
+
+        // Swipe navigation
+        let touchStartX = 0;
+        let touchEndX = 0;
+        const SWIPE_THRESHOLD = 50;
+
+        document.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+
+        document.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            if (!currentNftId || isNavigating) return;
+
+            const diff = touchStartX - touchEndX;
+            if (diff > SWIPE_THRESHOLD) {
+                // Swiped left -> Next
+                navigateToNFT(currentNftId < 3333 ? currentNftId + 1 : 1);
+            } else if (diff < -SWIPE_THRESHOLD) {
+                // Swiped right -> Previous
+                navigateToNFT(currentNftId > 1 ? currentNftId - 1 : 3333);
+            }
+        }, { passive: true });
+
+        function showError(msg) {
+            document.getElementById('nftDetailRoot').innerHTML = `
+                <div class="detail-error">
+                    <h2>😕 ${msg}</h2>
+                    <p>We couldn't load this Pippin.</p>
+                    <a href="explore.html" class="btn-primary">← Back to Collection</a>
+                </div>`;
+        }
+
+        async function loadNFTDetail(overrideId = null) {
+            // 1) Parse ?id= from URL or use override
+            let idRaw = new URLSearchParams(window.location.search).get('id');
+            if (overrideId && typeof overrideId === 'number') {
+                idRaw = overrideId;
+            }
+            const id = parseInt(idRaw);
+
+            if (!idRaw || isNaN(id) || id < 1) {
+                window.location.href = 'explore.html';
+                return;
+            }
+
+            currentNftId = id;
+
+            // 2) Fetch from Supabase
+            if (typeof supabaseClient === 'undefined' || !supabaseClient) {
+                showError('Supabase not configured');
+                return;
+            }
+
+            let nft;
+            try {
+                const { data, error } = await supabaseClient
+                    .from('nfts')
+                    .select('*')
+                    .eq('id', id)
+                    .single();
+
+                if (error) throw error;
+                nft = data;
+            } catch (err) {
+                console.error('Failed to load NFT from Supabase:', err);
+                showError(`Pippin #${id} not found`);
+                return;
+            }
+
+            // 4) Build the detail UI
+            document.title = `${nft.name || 'Pippin #' + id} — NFT Detail`;
+
+            const rarityKey = (nft.rarity || 'common').toLowerCase();
+            const rc = RARITY_COLORS[rarityKey] || RARITY_COLORS.common;
+
+            let baseTraits = {};
+            if (nft.traits && typeof nft.traits === 'object') {
+                // Filter out SKIP_KEYS even if using traits object
+                Object.entries(nft.traits).forEach(([k, v]) => {
+                    if (!SKIP_KEYS.has(k)) baseTraits[k] = v;
+                });
+            } else {
+                // Fallback for flat structure
+                Object.entries(nft).forEach(([k, v]) => {
+                    if (!SKIP_KEYS.has(k)) baseTraits[k] = v;
+                });
+            }
+
+            const bgColor = (baseTraits.background ? BG_MAP[baseTraits.background] : null) || '#1c1c28';
+            let lowImage = `https://xzkbbgbsnkocirthyuei.supabase.co/storage/v1/object/public/nfts/low/${id}.png`;
+            let hqImage = `https://xzkbbgbsnkocirthyuei.supabase.co/storage/v1/object/public/nfts/hq/${id}.webp`;
+
+            const isOneOfOne = ((nft.traits && nft.traits['1/1']) || nft['1/1'] || '').toLowerCase() === 'yes';
+
+            let displayTraits = {};
+            if (isOneOfOne) {
+                // If 1/1 is Yes, display ONLY 1/1: [NFT Name]
+                displayTraits['1/1'] = nft.name || 'Pippin #' + id;
+            } else {
+                // Display all other traits normally, excluding things like 1/1 and those with value "None"
+                Object.entries(baseTraits).forEach(([k, v]) => {
+                    const valStr = String(v || '').trim().toLowerCase();
+                    if (valStr === 'none' || valStr === '') return;
+                    displayTraits[k] = v;
+                });
+            }
+
+            if (isOneOfOne && nft.name) {
+                const oneOfOneName = nft.name === 'Tema' ? 'tema' : nft.name;
+                const oneOfOneUrl = `https://xzkbbgbsnkocirthyuei.supabase.co/storage/v1/object/public/nfts/hq/${encodeURIComponent(oneOfOneName)}.webp`;
+                lowImage = oneOfOneUrl;
+                hqImage = oneOfOneUrl;
+            }
+
+            // User requested main image should be the HQ webp
+            const mainDisplayImage = hqImage;
+
+            // Preload HQ image immediately so it's ready for the magnifier
+            const hqPreloader = new Image();
+            hqPreloader.src = hqImage;
+
+            // Traits HTML
+            const traitsHTML = Object.entries(displayTraits)
+                .map(([k, v]) => `
+                    <div class="trait-card">
+                        <span class="trait-key">${k}</span>
+                        <span class="trait-val">${v ?? '—'}</span>
+                    </div>
+                `).join('');
+
+            // Prev / Next navigation
+            const prevId = id > 1 ? id - 1 : 3333;
+            const nextId = id < 3333 ? id + 1 : 1;
+
+            // Preload adjacent standard HQ images for instant feeling
+            const preloadPrev = new Image(); preloadPrev.src = `https://xzkbbgbsnkocirthyuei.supabase.co/storage/v1/object/public/nfts/hq/${prevId}.webp`;
+            const preloadNext = new Image(); preloadNext.src = `https://xzkbbgbsnkocirthyuei.supabase.co/storage/v1/object/public/nfts/hq/${nextId}.webp`;
+
+            const navHTML = `
+                <div class="detail-topbar">
+                    <a href="explore.html" class="back-nav">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+                        Back to Explore
+                    </a>
+                    <div class="topbar-actions">
+                        <div class="token-search-group">
+                            <input type="number" id="detailTokenInput" class="token-input-small" placeholder="Enter Token ID" min="1" max="3333">
+                            <button class="token-go-btn" id="detailGoBtn">Go</button>
+                        </div>
+                        <button class="random-btn-small" id="detailRandomBtn">Random NFT</button>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('nftDetailRoot').innerHTML = `
+                ${navHTML}
+                <div class="nft-detail-layout" id="nftDetail">
+                    <!-- LEFT: Image + Magnifier -->
+                    <div class="magnify-container" id="magnifyContainer" style="background-color:${bgColor};">
+                        <img class="magnify-img" id="nftMainImg" src="${mainDisplayImage}" alt="${nft.name || 'Pippin #' + id}" onerror="this.src='https://via.placeholder.com/1000?text=Pippin+NFT'" />
+                        <div class="magnify-lens" id="magnifyLens"></div>
+                        <button class="nav-arrow-btn nav-arrow-left" onclick="event.stopPropagation(); navigateToNFT(${prevId})">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+                        </button>
+                        <button class="nav-arrow-btn nav-arrow-right" onclick="event.stopPropagation(); navigateToNFT(${nextId})">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+                        </button>
+                    </div>
+
+                    <!-- RIGHT: Info Card -->
+                    <div class="nft-detail-info">
+                        <div class="info-header-group">
+                            <h1 id="nftTitle">${nft.name || 'Pippin #' + String(id).padStart(4, '0')}</h1>
+                        </div>
+
+                        <!-- Compact Magnifier UI -->
+                        <div class="magnifier-controls">
+                            <div class="magnifier-sliders" style="flex-direction: column; gap: 1rem;">
+                                <div class="control-group">
+                                    <div class="control-label-row">
+                                        <span>Zoom Level</span>
+                                        <span id="zoomVal">4.0×</span>
+                                    </div>
+                                    <input type="range" id="zoomSlider" min="1.5" max="10" step="0.1" value="4.0">
+                                </div>
+                                <div class="control-group">
+                                    <div class="control-label-row">
+                                        <span>Magnifier Size</span>
+                                        <span id="sizeVal">250px</span>
+                                    </div>
+                                    <input type="range" id="sizeSlider" min="100" max="450" step="10" value="250">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="detail-divider"></div>
+                        
+                        <!-- Attribute Grid -->
+                        <div class="trait-grid-wrapper">
+                            <h3 style="font-size: 1.1rem; color: #f5f5f7; font-weight: 800; margin: 0 0 1.25rem 0;">Attributes</h3>
+                            <div class="trait-grid-inner" style="min-height: auto;">
+                                <div class="trait-grid${isOneOfOne ? ' one-of-one' : ''}">
+                                    ${traitsHTML}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="nft-badge-row" style="justify-content: center; padding: 1rem 0;">
+                            <span class="nav-link-disabled" style="font-size:0.75rem; padding:0.4rem 0.8rem; border-radius:100px; color:${rc.color}; background:${rc.bg}; border:1px solid ${rc.border}; text-transform:uppercase; font-weight:700;">${nft.rarity || 'Common'}</span>
+                            <span class="nav-link-disabled" style="font-size:0.75rem; padding:0.4rem 0.8rem; border-radius:100px; color:rgba(245,245,247,0.6); background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); font-weight:600;">Rank #${nft.rank ?? '—'}</span>
+                            ${nft['1/1'] && nft['1/1'].toLowerCase() === 'yes' ? '<span class="nav-link-disabled" style="font-size:0.75rem; padding:0.4rem 0.8rem; border-radius:100px; color:#fff; background:linear-gradient(135deg, #f59e0b, #ef4444); border:none; font-weight:800; text-transform:uppercase;">1 of 1</span>' : ''}
+                        </div>
+
+                        <div class="detail-divider"></div>
+
+                        <!-- Action Buttons at bottom -->
+                        <div class="detail-actions">
+                            <button class="btn-primary" id="buyBtn">View on OpenSea</button>
+                            <button class="btn-ghost" id="downloadRawBtn" style="display: flex; align-items: center; justify-content: center; gap: 0.5rem; width: 100%;">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                                Download Raw
+                            </button>
+                        </div>
+                    </div>
+                </div>`;
+
+            // 5) Wire up Buttons
+            document.getElementById('buyBtn').onclick = () => {
+                window.open(`https://opensea.io/assets/ethereum/0x77db1c96cdc18f82390ab349a8b33b4fb9d5ea87/${id}`, '_blank');
+            };
+            document.getElementById('downloadRawBtn').onclick = () => {
+                window.open(mainDisplayImage, '_blank');
+            };
+
+            document.getElementById('detailGoBtn').onclick = () => {
+                const val = document.getElementById('detailTokenInput').value;
+                if (val && val > 0 && val <= 3333) {
+                    navigateToNFT(parseInt(val));
+                }
+            };
+            document.getElementById('detailTokenInput').addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') document.getElementById('detailGoBtn').click();
+            });
+            document.getElementById('detailRandomBtn').onclick = () => {
+                const randomId = Math.floor(Math.random() * 3333) + 1;
+                navigateToNFT(randomId);
+            };
+
+            // 6) Magnifier logic
+            const container = document.getElementById('magnifyContainer');
+            const lens = document.getElementById('magnifyLens');
+            const zoomSlider = document.getElementById('zoomSlider');
+            const sizeSlider = document.getElementById('sizeSlider');
+            const zoomVal = document.getElementById('zoomVal');
+            const sizeVal = document.getElementById('sizeVal');
+
+            let currentZoom = 4.0;
+            let currentSize = 250;
+            let lastX = 0, lastY = 0;
+
+            zoomSlider.oninput = e => {
+                currentZoom = parseFloat(e.target.value);
+                zoomVal.textContent = currentZoom.toFixed(1) + '×';
+                if (lens.style.display === 'block') {
+                    // Refresh zoom and position
+                    lens.style.backgroundSize = (container.offsetWidth * currentZoom) + 'px ' + (container.offsetHeight * currentZoom) + 'px';
+                    const bgX = (lastX * currentZoom) - (currentSize / 2);
+                    const bgY = (lastY * currentZoom) - (currentSize / 2);
+                    lens.style.backgroundPosition = `-${bgX}px -${bgY}px`;
+                }
+            };
+
+            sizeSlider.oninput = e => {
+                currentSize = parseInt(e.target.value);
+                sizeVal.textContent = currentSize + 'px';
+                lens.style.width = currentSize + 'px';
+                lens.style.height = currentSize + 'px';
+            };
+
+            // Assign background image with automatic fallback
+            const finalHqImage = hqImage;
+            const tempImg = new Image();
+            tempImg.onload = () => {
+                lens.style.backgroundImage = `url('${finalHqImage}')`;
+            };
+            tempImg.onerror = () => {
+                console.warn('Magnifier: HQ asset 404, falling back to low-res.');
+                lens.style.backgroundImage = `url('${lowImage}')`;
+            };
+            tempImg.src = finalHqImage;
+
+            container.addEventListener('mousemove', e => {
+                lens.style.display = 'block';
+                const rect = container.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                lastX = x; lastY = y;
+
+                lens.style.left = (x - currentSize / 2) + 'px';
+                lens.style.top = (y - currentSize / 2) + 'px';
+
+                lens.style.backgroundSize =
+                    (container.offsetWidth * currentZoom) + 'px ' +
+                    (container.offsetHeight * currentZoom) + 'px';
+
+                const bgX = (x * currentZoom) - (currentSize / 2);
+                const bgY = (y * currentZoom) - (currentSize / 2);
+                lens.style.backgroundPosition = `-${bgX}px -${bgY}px`;
+            });
+
+            container.addEventListener('mouseleave', () => {
+                lens.style.display = 'none';
+            });
+        }
+
+        // Run on load
+        document.addEventListener('DOMContentLoaded', () => loadNFTDetail());
+    </script>
+    <script src="main.js"></script>
+</body>
+
+</html>

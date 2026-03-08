@@ -1,0 +1,25 @@
+{
+  "name": "pippin-app",
+  "version": "1.0.0",
+  "description": "A full website project optimized for Vercel deployment.",
+  "main": "main.js",
+  "scripts": {
+    "build": "echo \"Building static site...\"",
+    "start": "serve .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.98.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "clsx": "^2.1.1",
+    "framer-motion": "^12.35.0",
+    "puppeteer": "^24.38.0",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4"
+  }
+}

@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pippin × Project Collaboration</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Outfit:wght@300;400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="collab.css" />
+</head>
+
+<body>
+
+    <!-- NAVIGATION -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-logo-wrap">
+                <img src="https://xzkbbgbsnkocirthyuei.supabase.co/storage/v1/object/public/assets/branding/pippin-web.svg"
+                    class="nav-logo-icon" alt="Pippin Logo">
+                <span class="nav-logo">Pippin NFT</span>
+            </a>
+            <div class="nav-right-group">
+                <div class="nav-links-pilled">
+                    <a href="index.html" class="nav-link">Home</a>
+                    <a href="explore.html" class="nav-link">Explore</a>
+                    <span class="nav-link nav-link-disabled" data-tooltip="Coming Soon">Collaborations</span>
+                    <a href="about.html" class="nav-link">About</a>
+                </div>
+                <div class="nav-social-icons">
+                    <a href="https://opensea.io/collection/pippinnft" target="_blank" class="nav-social-btn opensea-btn"
+                        aria-label="OpenSea">
+                        <svg viewBox="0 0 360 360" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M181.6 0C80.9-.8-.8 80.9 0 181.6c.8 97.7 80.7 177.6 178.4 178.4 100.7.9 182.4-80.9 181.6-181.6C359.2 80.7 279.3.8 181.6 0Zm-53.9 89.6c11.5 14.6 18.4 33.2 18.4 53.2 0 17.4-5.2 33.6-14 47.2H69.7l58-100.4ZM318 199.2v13c0 .8-.4 1.5-1.2 1.9-4.2 1.8-18.2 8.3-24 16.3-15 20.9-26.4 53.6-52 53.6H134.2c-37.8 0-69.4-30-69.3-69.9 0-1 .8-1.8 1.8-1.8h50.5c1.8 0 3.1 1.4 3.1 3.1v9.8c0 5.2 4.2 9.4 9.4 9.4h38.3v-22.3h-26.2c15.1-19.1 24-43.2 24-69.4 0-29.2-11.2-55.9-29.6-75.9 11.1 1.3 21.7 3.5 31.7 6.4v-6.2c0-6.4 5.2-11.7 11.7-11.7 6.4 0 11.7 5.2 11.7 11.7v15c35.8 16.7 59.2 44.4 59.2 75.8 0 18.4-8 35.5-21.9 49.9-2.7 2.8-6.4 4.3-10.2 4.3h-27.1v22.3H225.4c7.3 0 20.4-13.9 26.7-22.3 0 0 .3-.4 1-.6.7-.2 62.4-14.4 62.4-14.4 1.3-.4 2.6.6 2.6 1.9Z" />
+                        </svg>
+                    </a>
+                    <a href="https://x.com/pippin_nft" target="_blank" class="nav-social-btn twitter-btn"
+                        aria-label="X / Twitter">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                        </svg>
+                    </a>
+                    <a href="https://discord.com/invite/2yHd2JPK6Z" target="_blank" class="nav-social-btn discord-btn"
+                        aria-label="Discord">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057.101 18.08.102 18.103.104 18.125a19.876 19.876 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14 14 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            <button class="nav-mobile-toggle" id="mobileToggle" onclick="toggleMobileMenu()">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="index.html" class="mobile-link">Home</a>
+            <a href="explore.html" class="mobile-link">Explore</a>
+            <span class="mobile-link nav-link-disabled" data-tooltip="Coming Soon"
+                style="border-bottom: 1px solid rgba(255, 255, 255, 0.06); padding: 0.6rem 0;">Collaborations</span>
+            <a href="about.html" class="mobile-link">About</a>
+            <div
+                style="display:flex;gap:0.75rem;margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,0.08);">
+                <a href="https://opensea.io/collection/pippinnft" target="_blank" class="nav-social-btn opensea-btn"
+                    style="width:44px;height:44px;">
+                    <svg viewBox="0 0 360 360" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M181.6 0C80.9-.8-.8 80.9 0 181.6c.8 97.7 80.7 177.6 178.4 178.4 100.7.9 182.4-80.9 181.6-181.6C359.2 80.7 279.3.8 181.6 0Zm-53.9 89.6c11.5 14.6 18.4 33.2 18.4 53.2 0 17.4-5.2 33.6-14 47.2H69.7l58-100.4ZM318 199.2v13c0 .8-.4 1.5-1.2 1.9-4.2 1.8-18.2 8.3-24 16.3-15 20.9-26.4 53.6-52 53.6H134.2c-37.8 0-69.4-30-69.3-69.9 0-1 .8-1.8 1.8-1.8h50.5c1.8 0 3.1 1.4 3.1 3.1v9.8c0 5.2 4.2 9.4 9.4 9.4h38.3v-22.3h-26.2c15.1-19.1 24-43.2 24-69.4 0-29.2-11.2-55.9-29.6-75.9 11.1 1.3 21.7 3.5 31.7 6.4v-6.2c0-6.4 5.2-11.7 11.7-11.7 6.4 0 11.7 5.2 11.7 11.7v15c35.8 16.7 59.2 44.4 59.2 75.8 0 18.4-8 35.5-21.9 49.9-2.7 2.8-6.4 4.3-10.2 4.3h-27.1v22.3H225.4c7.3 0 20.4-13.9 26.7-22.3 0 0 .3-.4 1-.6.7-.2 62.4-14.4 62.4-14.4 1.3-.4 2.6.6 2.6 1.9Z" />
+                    </svg>
+                </a>
+                <a href="https://x.com/pippin_nft" target="_blank" class="nav-social-btn twitter-btn"
+                    style="width:44px;height:44px;">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                    </svg>
+                </a>
+                <a href="https://discord.com/invite/2yHd2JPK6Z" target="_blank" class="nav-social-btn discord-btn"
+                    style="width:44px;height:44px;">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057.101 18.08.102 18.103.104 18.125a19.876 19.876 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14 14 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- COLLAB HERO SECTION -->
+    <section class="collab-hero">
+        <div class="collab-hero-bg"></div>
+        <div class="collab-hero-content">
+            <div class="collab-badge live-badge">
+                <span class="pulse-dot"></span> LIVE
+            </div>
+            <div class="collab-logos">
+                <div class="logo-circle pippin-logo">P</div>
+                <div class="logo-cross">×</div>
+                <div class="logo-circle partner-logo">N</div>
+            </div>
+            <h1 class="hero-title">
+                Pippin × <span class="hero-title-accent">Nexus</span>
+            </h1>
+            <p class="hero-subtitle">
+                Exclusive guaranteed whitelist spots for the Pippin community. Don't miss out on this high-end
+                generative art collaboration.
+            </p>
+        </div>
+    </section>
+
+    <!-- COLLAB OVERVIEW GRID -->
+    <section class="collab-overview">
+        <div class="overview-grid">
+            <div class="overview-card">
+                <div class="card-icon">💎</div>
+                <div class="card-label">Supply</div>
+                <div class="card-value">5,555</div>
+            </div>
+            <div class="overview-card">
+                <div class="card-icon">⛓️</div>
+                <div class="card-label">Blockchain</div>
+                <div class="card-value">Ethereum</div>
+            </div>
+            <div class="overview-card">
+                <div class="card-icon">📅</div>
+                <div class="card-label">Mint Date</div>
+                <div class="card-value">TBA</div>
+            </div>
+            <div class="overview-card">
+                <div class="card-icon">💰</div>
+                <div class="card-label">Mint Price</div>
+                <div class="card-value">Free Mint</div>
+            </div>
+            <a href="#" class="overview-card link-card">
+                <div class="card-icon">🌐</div>
+                <div class="card-label">Official Website</div>
+                <div class="card-value link-text">nexus-nft.io</div>
+            </a>
+            <a href="#" class="overview-card link-card">
+                <div class="card-icon">🐦</div>
+                <div class="card-label">Twitter / X</div>
+                <div class="card-value link-text">@NexusNFT</div>
+            </a>
+        </div>
+    </section>
+
+    <!-- COLLAB ABOUT SECTION -->
+    <section class="collab-about">
+        <div class="section-tag">✦ About the project</div>
+        <h2 class="section-title">What is Nexus?</h2>
+        <p class="section-body light-body">
+            Nexus is a revolutionary digital art project bridging the gap between surreal cyberpunk aesthetics
+            and
+            high-fashion 3D design. By focusing on utility, storytelling, and immersive experiences, Nexus aims
+            to
+            redefine what it means to hold a digital collectible. Our partnership provides exclusive early
+            access to
+            Pippin holders and true believers of the ecosystem.
+        </p>
+    </section>
+
+    <!-- GIVEAWAY SECTION -->
+    <section class="giveaway-section" id="giveaway">
+        <div class="giveaway-container">
+            <div class="giveaway-header">
+                <h2 class="giveaway-title">Win Guaranteed Spots</h2>
+                <div class="countdown-timer">
+                    <div class="time-box"><span id="days">02</span><small>Days</small></div>:
+                    <div class="time-box"><span id="hours">14</span><small>Hours</small></div>:
+                    <div class="time-box"><span id="minutes">45</span><small>Mins</small></div>:
+                    <div class="time-box"><span id="seconds">30</span><small>Secs</small></div>
+                </div>
+            </div>
+
+            <div class="points-display">
+                <div class="points-circle">
+                    <span id="currentPoints">0</span>
+                    <small>Points</small>
+                </div>
+                <div class="points-progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
+                </div>
+                <p class="points-feedback" id="pointsFeedback">Complete tasks to earn points!</p>
+            </div>
+
+            <div class="task-list">
+                <div class="task-card" data-points="1" data-task="visit">
+                    <div class="task-info">
+                        <div class="task-icon">🌐</div>
+                        <div class="task-details">
+                            <h4>Visit Nexus Website</h4>
+                            <span>+1 Point</span>
+                        </div>
+                    </div>
+                    <button class="task-btn">Visit</button>
+                </div>
+
+                <div class="task-card" data-points="2" data-task="follow">
+                    <div class="task-info">
+                        <div class="task-icon">🐦</div>
+                        <div class="task-details">
+                            <h4>Follow @NexusNFT on X</h4>
+                            <span>+2 Points</span>
+                        </div>
+                    </div>
+                    <button class="task-btn">Follow</button>
+                </div>
+
+                <div class="task-card" data-points="3" data-task="question">
+                    <div class="task-info">
+                        <div class="task-icon">❓</div>
+                        <div class="task-details">
+                            <h4>Answer a simple question</h4>
+                            <span>+3 Points</span>
+                        </div>
+                    </div>
+                    <button class="task-btn" onclick="openQuestionModal()">Answer</button>
+                </div>
+
+                <div class="task-card" data-points="3" data-task="share">
+                    <div class="task-info">
+                        <div class="task-icon">🔁</div>
+                        <div class="task-details">
+                            <h4>Share the announcement</h4>
+                            <span>+3 Points</span>
+                        </div>
+                    </div>
+                    <button class="task-btn">Share</button>
+                </div>
+
+                <div class="task-card bonus-task" data-points="5" data-task="hold">
+                    <div class="task-info">
+                        <div class="task-icon">✨</div>
+                        <div class="task-details">
+                            <h4>Hold a Pippin NFT</h4>
+                            <span>+5 Bonus Points</span>
+                        </div>
+                    </div>
+                    <button class="task-btn verify-btn">Verify</button>
+                </div>
+            </div>
+
+            <form class="giveaway-form" id="giveawayForm">
+                <div class="form-group">
+                    <label for="walletAddress">Wallet Address (ERC-20)</label>
+                    <input type="text" id="walletAddress" placeholder="0x..." required pattern="^0x[a-fA-F0-9]{40}$" />
+                    <span class="error-msg">Please enter a valid ETH address</span>
+                </div>
+                <div class="form-group">
+                    <label for="emailAddress">Email Address (Optional)</label>
+                    <input type="email" id="emailAddress" placeholder="hello@example.com" />
+                </div>
+                <button type="submit" class="btn-primary large enter-btn" id="enterGiveawayBtn" disabled>
+                    Enter Giveaway
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.5">
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- WINNERS SECTION (HIDDEN BY DEFAULT) -->
+    <section class="winners-section hidden" id="winnersSection">
+        <div class="section-tag">✦ Results</div>
+        <h2 class="section-title">Giveaway Winners</h2>
+        <p class="section-body center-text">Congratulations to the drawn addresses below. Fairness proof hash:
+            <br><span class="hash-text">0x9a7f8e...4b2c1d</span>
+        </p>
+        <div class="winners-grid">
+            <div class="winner-card">
+                <span class="winner-rank">#1</span>
+                <span class="winner-address">0x1234...ABCD</span>
+            </div>
+            <div class="winner-card">
+                <span class="winner-rank">#2</span>
+                <span class="winner-address">0x5678...EF01</span>
+            </div>
+            <div class="winner-card">
+                <span class="winner-rank">#3</span>
+                <span class="winner-address">0x9ABC...2345</span>
+            </div>
+            <div class="winner-card">
+                <span class="winner-rank">#4</span>
+                <span class="winner-address">0xDEF0...6789</span>
+            </div>
+            <div class="winner-card">
+                <span class="winner-rank">#5</span>
+                <span class="winner-address">0x4321...DCBA</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- QUESTION MODAL -->
+    <div class="modal" id="questionModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeQuestionModal()">&times;</span>
+            <h3 class="modal-title">Answer to earn</h3>
+            <p>What is the total supply of Nexus NFTs?</p>
+            <div class="modal-options">
+                <button class="option-btn" onclick="submitAnswer(false)">3,333</button>
+                <button class="option-btn" onclick="submitAnswer(true)">5,555</button>
+                <button class="option-btn" onclick="submitAnswer(false)">10,000</button>
+            </div>
+        </div>
+    </div>
+
+
+    <footer class="footer" id="footer">
+        <div class="footer-inner">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <div class="footer-logo">Pippin NFT</div>
+                    <p class="footer-tagline">A universe of tiny legends.<br />Hand-crafted. Fully on-chain.</p>
+                    <div class="footer-socials">
+                        <a href="https://x.com/pippin_nft" class="footer-social-link" aria-label="Twitter"
+                            target="_blank">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                            </svg>
+                        </a>
+                        <a href="https://discord.com/invite/2yHd2JPK6Z" class="footer-social-link" aria-label="Discord"
+                            target="_blank">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057.101 18.08.102 18.103.104 18.125a19.876 19.876 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14 14 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-30.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z" />
+                            </svg>
+                        </a>
+                        <a href="https://opensea.io/collection/pippinnft" class="footer-social-link"
+                            aria-label="OpenSea" target="_blank">
+                            <svg viewBox="0 0 360 360" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M181.6 0C80.9-.8-.8 80.9 0 181.6c.8 97.7 80.7 177.6 178.4 178.4 100.7.9 182.4-80.9 181.6-181.6C359.2 80.7 279.3.8 181.6 0Zm-53.9 89.6c11.5 14.6 18.4 33.2 18.4 53.2 0 17.4-5.2 33.6-14 47.2H69.7l58-100.4ZM318 199.2v13c0 .8-.4 1.5-1.2 1.9-4.2 1.8-18.2 8.3-24 16.3-15 20.9-26.4 53.6-52 53.6H134.2c-37.8 0-69.4-30-69.3-69.9 0-1 .8-1.8 1.8-1.8h50.5c1.8 0 3.1 1.4 3.1 3.1v9.8c0 5.2 4.2 9.4 9.4 9.4h38.3v-22.3h-26.2c15.1-19.1 24-43.2 24-69.4 0-29.2-11.2-55.9-29.6-75.9 11.1 1.3 21.7 3.5 31.7 6.4v-6.2c0-6.4 5.2-11.7 11.7-11.7 6.4 0 11.7 5.2 11.7 11.7v15c35.8 16.7 59.2 44.4 59.2 75.8 0 18.4-8 35.5-21.9 49.9-2.7 2.8-6.4 4.3-10.2 4.3h-27.1v22.3H225.4c7.3 0 20.4-13.9 26.7-22.3 0 0 .3-.4 1-.6.7-.2 62.4-14.4 62.4-14.4 1.3-.4 2.6.6 2.6 1.9Z" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-links-group">
+                    <h4>Navigate</h4>
+                    <a href="index.html">Home</a>
+                    <a href="about.html">About</a>
+                    <a href="explore.html">Explore Collection</a>
+                    <span class="footer-link-disabled" data-tooltip="Coming Soon">Collaborations</span>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>© 2026 Pippin NFT. All rights reserved.</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+    <script src="collab.js"></script>
+</body>
+
+</html>

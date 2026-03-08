@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Apply for Collaboration | Pippin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Outfit:wght@300;400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="collabs.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" />
+    <style>
+        .apply-main {
+            padding: 8rem 2rem 5rem;
+            display: flex;
+            justify-content: center;
+        }
+
+        .apply-container {
+            background: rgba(28, 28, 40, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 32px;
+            padding: 4rem;
+            max-width: 800px;
+            width: 100%;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4),
+                0 0 0 1px rgba(255, 255, 255, 0.05);
+            animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .apply-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .apply-header h1 {
+            font-size: 2.5rem;
+            color: #f5f5f7;
+            margin-bottom: 0.5rem;
+            font-weight: 800;
+        }
+
+        .apply-header p {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 1.1rem;
+        }
+
+        .apply-form .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .apply-form label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.8);
+            letter-spacing: 0.05em;
+        }
+
+        .apply-form input[type="text"],
+        .apply-form input[type="url"],
+        .apply-form input[type="number"],
+        .apply-form input[type="date"],
+        .apply-form select,
+        .apply-form textarea {
+            width: 100%;
+            padding: 1.1rem 1.4rem;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            color: #fff;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            box-sizing: border-box;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .apply-form input:hover,
+        .apply-form select:hover,
+        .apply-form textarea:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        .apply-form input:focus,
+        .apply-form select:focus,
+        .apply-form textarea:focus {
+            outline: none;
+            border-color: #c084fc;
+            background: rgba(0, 0, 0, 0.4);
+            box-shadow: 0 0 0 4px rgba(192, 132, 252, 0.15),
+                inset 0 2px 4px rgba(0, 0, 0, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .apply-form textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.8rem;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .checkbox-tba {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.8rem;
+        }
+
+        .checkbox-tba input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: #c084fc;
+            cursor: pointer;
+        }
+
+        .checkbox-tba label {
+            margin-bottom: 0 !important;
+            font-size: 0.85rem !important;
+            color: rgba(255, 255, 255, 0.6) !important;
+            cursor: pointer;
+        }
+
+        .date-input-wrapper {
+            position: relative;
+        }
+
+        .date-input-wrapper input[type="date"]::-webkit-calendar-picker-indicator {
+            opacity: 0;
+            cursor: pointer;
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .date-icon {
+            position: absolute;
+            right: 1.2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.6);
+            pointer-events: none;
+        }
+
+        .hidden-field {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+            margin-bottom: 0 !important;
+        }
+
+        .visible-field {
+            max-height: 120px;
+            opacity: 1;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem !important;
+        }
+
+        .custom-select {
+            position: relative;
+            width: 100%;
+            outline: none;
+        }
+
+        .custom-select-trigger {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 1.1rem 1.4rem;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            color: #fff;
+            font-size: 1rem;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .custom-select:hover .custom-select-trigger {
+            border-color: rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        .custom-select:focus .custom-select-trigger,
+        .custom-select.active .custom-select-trigger {
+            border-color: #c084fc;
+            background: rgba(0, 0, 0, 0.4);
+            box-shadow: 0 0 0 4px rgba(192, 132, 252, 0.15);
+            transform: translateY(-1px);
+        }
+
+        .dropdown-icon {
+            color: rgba(255, 255, 255, 0.6);
+            transition: transform 0.3s ease;
+        }
+
+        .custom-select.active .dropdown-icon {
+            transform: rotate(180deg);
+        }
+
+        .custom-select-options {
+            position: absolute;
+            top: calc(100% + 10px);
+            left: 0;
+            width: 100%;
+            background: #2a2a3bc0;
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+            z-index: 100;
+        }
+
+        .custom-select.active .custom-select-options {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .custom-option {
+            display: flex;
+            align-items: center;
+            padding: 0.9rem 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .custom-option:hover,
+        .custom-option.selected,
+        .custom-option.focused {
+            background: rgba(192, 132, 252, 0.15);
+            color: #fff;
+        }
+
+        .custom-option.hidden-option {
+            display: none;
+        }
+
+        .dropdown-search-wrapper {
+            padding: 0.8rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            position: relative;
+        }
+
+        .dropdown-search-input {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: #fff;
+            padding: 0.6rem 0.8rem 0.6rem 2.2rem;
+            font-size: 0.9rem;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.2s;
+            box-sizing: border-box;
+        }
+
+        .dropdown-search-input:focus {
+            border-color: #c084fc;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1.4rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.4);
+            pointer-events: none;
+        }
+
+        .chain-icon {
+            margin-right: 0.8rem;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            margin-top: 0.2rem;
+            width: 18px;
+            height: 18px;
+            accent-color: #c084fc;
+        }
+
+        .checkbox-group label {
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.4;
+            font-size: 0.95rem;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1.2rem;
+            font-size: 1.1rem;
+            border-radius: 100px;
+            cursor: pointer;
+            border: none;
+        }
+
+        .success-state {
+            display: none;
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .success-state h2 {
+            color: #5eead4;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .success-state p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        .image-upload-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .upload-field {
+            position: relative;
+        }
+
+        .upload-label-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2.5rem 1.5rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px dashed rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .upload-label-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at center, rgba(192, 132, 252, 0.1), transparent);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .upload-label-btn:hover,
+        .upload-label-btn.dragging {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: #c084fc;
+            transform: translateY(-2px);
+        }
+
+        .upload-label-btn:hover::before,
+        .upload-label-btn.dragging::before {
+            opacity: 1;
+        }
+
+        .upload-label-btn.dragging {
+            box-shadow: 0 0 0 4px rgba(192, 132, 252, 0.1);
+            transform: scale(1.02);
+        }
+
+        .upload-label-btn svg {
+            margin-bottom: 0.5rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .upload-label-btn span {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .image-preview-container {
+            position: relative;
+            width: 100%;
+            height: 140px;
+            background: #000;
+            border-radius: 20px;
+            overflow: hidden;
+            display: none;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .preview-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .remove-image-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(220, 38, 38, 0.8);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+
+        .remove-image-btn:hover {
+            background: #dc2626;
+        }
+
+        .hidden-input {
+            display: none;
+        }
+
+        @media (max-width: 600px) {
+
+            .form-row,
+            .image-upload-wrapper {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVIGATION -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-logo">Pippin NFT</a>
+
+            <div class="nav-right-group">
+                <div class="nav-links-pilled">
+                    <a href="index.html" class="nav-link">Home</a>
+                    <a href="explore.html" class="nav-link">Explore</a>
+                    <span class="nav-link nav-link-disabled" data-tooltip="Coming Soon">Collaborations</span>
+                    <a href="about.html" class="nav-link">About</a>
+                </div>
+                <a href="https://opensea.io/collection/pippinnft" target="_blank" class="nav-cta btn-primary">View on
+                    OpenSea</a>
+            </div>
+
+            <button class="nav-mobile-toggle" id="mobileToggle" onclick="toggleMobileMenu()">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="index.html" class="mobile-link">Home</a>
+            <a href="explore.html" class="mobile-link">Explore</a>
+            <span class="mobile-link nav-link-disabled" data-tooltip="Coming Soon"
+                style="border-bottom: 1px solid rgba(255, 255, 255, 0.06); padding: 0.6rem 0;">Collaborations</span>
+            <a href="about.html" class="mobile-link">About</a>
+            <a href="https://opensea.io/collection/pippinnft" target="_blank" class="mobile-link mobile-cta">View on
+                OpenSea</a>
+        </div>
+    </nav>
+
+    <!-- FORM SECTION -->
+    <main class="apply-main">
+        <div class="apply-container" id="formContainer">
+            <div class="apply-header">
+                <h1>Partner With Pippin</h1>
+                <p>Submit your project details to explore a collaboration with us.</p>
+            </div>
+
+            <form class="apply-form" id="collabApplyForm">
+                <!-- SECTION: BASIC INFO -->
+                <div class="form-section" style="margin-bottom: 3rem;">
+                    <h3
+                        style="color: #c084fc; font-size: 1.1rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.8rem;">
+                        <span
+                            style="width: 24px; height: 24px; background: rgba(192, 132, 252, 0.1); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 0.8rem;">01</span>
+                        Basic Information
+                    </h3>
+                    <div class="form-group" style="margin-bottom: 1.5rem;">
+                        <label>Project Name *</label>
+                        <input type="text" id="projectName" required placeholder="e.g. Pudgy Penguins" />
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Official Website *</label>
+                            <input type="text" id="website" required placeholder="https://..." />
+                        </div>
+                        <div class="form-group">
+                            <label>Twitter/X Link *</label>
+                            <input type="text" id="twitterLink" required placeholder="https://x.com/..." />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Discord Invite Link</label>
+                        <input type="text" id="discordLink" placeholder="https://discord.gg/..." />
+                    </div>
+                </div>
+
+                <!-- SECTION: MEDIA ASSETS -->
+                <div class="form-section"
+                    style="margin-bottom: 3rem; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.05);">
+                    <h3
+                        style="color: #c084fc; font-size: 1.1rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.8rem;">
+                        <span
+                            style="width: 24px; height: 24px; background: rgba(192, 132, 252, 0.1); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 0.8rem;">02</span>
+                        Media Assets
+                    </h3>
+                    <div class="image-upload-wrapper">
+                        <div class="upload-field">
+                            <label>Project Avatar *</label>
+                            <label for="avatarInput" class="upload-label-btn" id="avatarLabel">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="17 8 12 3 7 8"></polyline>
+                                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                                </svg>
+                                <span>Upload Avatar<br><small>(Square PNG/JPG)</small></span>
+                            </label>
+                            <div
+                                style="margin-top: 0.5rem; display: flex; justify-content: space-between; align-items: center;">
+                                <span style="font-size: 0.75rem; color: rgba(255, 255, 255, 0.4);">Required size:
+                                    <strong style="color: rgba(255, 255, 255, 0.6);">500x500px</strong></span>
+                                <span id="avatarDimPreview"
+                                    style="font-size: 0.75rem; color: #c084fc; font-weight: 600; display: none;"></span>
+                            </div>
+                            <input type="file" id="avatarInput" class="hidden-input" accept="image/*" />
+                            <div class="image-preview-container" id="avatarPreviewContainer">
+                                <img src="" class="preview-image" id="avatarPreview">
+                                <button type="button" class="remove-image-btn" id="removeAvatar">×</button>
+                            </div>
+                        </div>
+                        <div class="upload-field">
+                            <label>Project Banner *</label>
+                            <label for="bannerInput" class="upload-label-btn" id="bannerLabel">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="17 8 12 3 7 8"></polyline>
+                                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                                </svg>
+                                <span>Upload Banner<br><small>(3:1 aspect ratio)</small></span>
+                            </label>
+                            <div
+                                style="margin-top: 0.5rem; display: flex; justify-content: space-between; align-items: center;">
+                                <span style="font-size: 0.75rem; color: rgba(255, 255, 255, 0.4);">Required size:
+                                    <strong style="color: rgba(255, 255, 255, 0.6);">1500x500px</strong></span>
+                                <span id="bannerDimPreview"
+                                    style="font-size: 0.75rem; color: #c084fc; font-weight: 600; display: none;"></span>
+                            </div>
+                            <input type="file" id="bannerInput" class="hidden-input" accept="image/*" />
+                            <div class="image-preview-container" id="bannerPreviewContainer">
+                                <img src="" class="preview-image" id="bannerPreview">
+                                <button type="button" class="remove-image-btn" id="removeBanner">×</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION: PROJECT DETAILS -->
+                <div class="form-section"
+                    style="margin-bottom: 3rem; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.05);">
+                    <h3
+                        style="color: #c084fc; font-size: 1.1rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.8rem;">
+                        <span
+                            style="width: 24px; height: 24px; background: rgba(192, 132, 252, 0.1); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 0.8rem;">03</span>
+                        Project Details
+                    </h3>
+                    <div class="form-row">
+                        <div class="form-group custom-select-group" id="chainSelectGroup" style="z-index: 50;">
+                            <label>Chain *</label>
+                            <div class="custom-select" id="chainCustomSelect" tabindex="0">
+                                <div class="custom-select-trigger" id="chainDisplay">
+                                    <span style="display:flex; align-items:center;">Select chain...</span>
+                                    <svg class="dropdown-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <polyline points="6 9 12 15 18 9"></polyline>
+                                    </svg>
+                                </div>
+                                <div class="custom-select-options" id="chainOptions">
+                                    <div class="dropdown-search-wrapper">
+                                        <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <circle cx="11" cy="11" r="8"></circle>
+                                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                                        </svg>
+                                        <input type="text" class="dropdown-search-input" id="chainSearch"
+                                            placeholder="Search chain..." autocomplete="off" />
+                                    </div>
+                                    <div class="custom-option" data-value="Ethereum">
+                                        <svg class="chain-icon" viewBox="0 0 320 512" fill="currentColor">
+                                            <path
+                                                d="M311.9 260.8L160 353.6 8 260.8 160 0l151.9 260.8zM160 383.4L8 290.6 160 512l152-221.4-152 92.8z" />
+                                        </svg>
+                                        Ethereum
+                                    </div>
+                                    <div class="custom-option" data-value="Solana">
+                                        <svg class="chain-icon" viewBox="0 0 321 251" fill="#14F195">
+                                            <path
+                                                d="M51.1398 56.4025L278.434 56.4025C293.447 56.4025 300.975 38.2573 290.354 27.6369L262.776 0L35.4809 0C20.4682 0 12.9404 18.1451 23.5608 28.7656L51.1398 56.4025Z" />
+                                            <path
+                                                d="M269.86 194.597L42.5658 194.597C27.5531 194.597 20.0253 212.743 30.6457 223.363L58.2247 251H285.52C300.533 251 308.061 232.855 297.44 222.234L269.86 194.597Z" />
+                                            <path
+                                                d="M51.1398 97.2974H278.434C293.447 97.2974 300.975 115.443 290.354 126.063L262.776 153.699H35.4809C20.4682 153.699 12.9404 135.554 23.5608 124.934L51.1398 97.2974Z" />
+                                        </svg>
+                                        Solana
+                                    </div>
+                                    <div class="custom-option" data-value="Polygon">
+                                        <svg class="chain-icon" viewBox="0 0 41 35" fill="#8247E5">
+                                            <path
+                                                d="M28.0567 11.2312L20.45 6.83907L12.8434 11.2312V20.0153L20.45 24.4074L28.0567 20.0153V11.2312ZM35.6888 15.6543V24.3643L28.0822 28.7564V31.815V33.1936L20.45 37.5857L12.8179 33.1936V28.7564L5.21124 24.3643V15.6543L12.8179 11.2622V8.1287L20.45 3.7366L28.0822 8.1287V11.2622L35.6888 15.6543H35.6888ZM28.0822 20.0464L32.1009 17.7667L28.0822 15.487V20.0464ZM8.8179 17.7667L12.8366 20.0464V15.487L8.8179 17.7667Z" />
+                                        </svg>
+                                        Polygon
+                                    </div>
+                                    <div class="custom-option" data-value="Base">
+                                        <svg class="chain-icon" viewBox="0 0 100 100" fill="none">
+                                            <circle cx="50" cy="50" r="50" fill="#0052FF" />
+                                            <circle cx="50" cy="50" r="22" fill="#1c1c28" />
+                                        </svg>
+                                        Base
+                                    </div>
+                                    <div class="custom-option" data-value="Arbitrum">
+                                        <svg class="chain-icon" viewBox="0 0 32 32" fill="none">
+                                            <path
+                                                d="M15.938 31.916H16.06c8.53.076 15.69-6.666 15.934-15.197.106-3.804-1.294-7.44-3.844-10.292L23.487 11.69a6.666 6.666 0 0 1-13.332-1.928 6.685 6.685 0 0 1 11.455-4.515l3.524-3.523A15.923 15.923 0 0 0 16 .01C7.265.01.127 7.03-.021 15.76c-.07 4.148 1.436 8.163 4.223 11.242A16.036 16.036 0 0 0 15.938 31.916zm3.507-22.18c2.148 2.15 2.148 5.632.002 7.78a5.522 5.522 0 0 1-7.788 0 5.485 5.485 0 0 1 0-7.78 5.518 5.518 0 0 1 7.786 0z"
+                                                fill="#28A0F0" />
+                                        </svg>
+                                        Arbitrum
+                                    </div>
+                                    <div class="custom-option" data-value="Other">
+                                        <svg class="chain-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <line x1="12" y1="8" x2="12" y2="16"></line>
+                                            <line x1="8" y1="12" x2="16" y2="12"></line>
+                                        </svg>
+                                        Other
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="hidden" id="chain" />
+                            <div id="otherChainGroup" class="form-group hidden-field" style="margin-top: 1.5rem;">
+                                <label>Specify blockchain *</label>
+                                <input type="text" id="otherChain" placeholder="e.g. Bitcoin" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Supply *</label>
+                            <input type="number" id="supply" required placeholder="e.g. 5555" />
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Mint Date *</label>
+                            <div class="date-input-wrapper">
+                                <input type="date" id="mintDate" required onclick="this.showPicker && this.showPicker()"
+                                    style="color-scheme: dark; cursor: pointer;" />
+                                <svg class="date-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                                </svg>
+                            </div>
+                            <div class="checkbox-tba">
+                                <input type="checkbox" id="mintTba" />
+                                <label for="mintTba">To Be Announced (TBA)</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Estimated Twitter Followers *</label>
+                            <input type="number" id="twitterFollowers" required placeholder="e.g. 25000" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Short Description *</label>
+                        <textarea id="description" required placeholder="What makes your project unique?"></textarea>
+                    </div>
+                </div>
+
+                <!-- SECTION: PARTNERSHIP -->
+                <div class="form-section"
+                    style="margin-bottom: 3rem; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.05);">
+                    <h3
+                        style="color: #c084fc; font-size: 1.1rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.8rem;">
+                        <span
+                            style="width: 24px; height: 24px; background: rgba(192, 132, 252, 0.1); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 0.8rem;">04</span>
+                        Partnership Terms
+                    </h3>
+                    <div class="form-group" style="margin-bottom: 2.5rem;">
+                        <label style="margin-bottom: 1rem; font-size: 0.95rem; color: #f5f5f7;">Spots Offered to Pippin
+                            Holders *</label>
+                        <div class="form-row">
+                            <div class="form-group"
+                                style="background: rgba(0,0,0,0.3); padding: 1.5rem; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 0;">
+                                <div class="checkbox-tba" style="margin-top: 0;">
+                                    <input type="checkbox" id="wlCheck" />
+                                    <label for="wlCheck"
+                                        style="font-size: 1rem !important; color: #fff !important; font-weight: 600;">Whitelist
+                                        (WL)</label>
+                                </div>
+                                <div id="wlSpotsGroup" class="form-group hidden-field" style="margin-top: 1.5rem;">
+                                    <label>Number of WL Spots *</label>
+                                    <input type="number" id="wlSpots" placeholder="e.g. 50" min="1" step="1" />
+                                </div>
+                            </div>
+                            <div class="form-group"
+                                style="background: rgba(0,0,0,0.3); padding: 1.5rem; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 0;">
+                                <div class="checkbox-tba" style="margin-top: 0;">
+                                    <input type="checkbox" id="gtdCheck" />
+                                    <label for="gtdCheck"
+                                        style="font-size: 1rem !important; color: #fff !important; font-weight: 600;">Guaranteed
+                                        Spots (GTD)</label>
+                                </div>
+                                <div id="gtdSpotsGroup" class="form-group hidden-field" style="margin-top: 1.5rem;">
+                                    <label>Number of GTD Spots *</label>
+                                    <input type="number" id="gtdSpots" placeholder="e.g. 10" min="1" step="1" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="checkbox-group"
+                        style="background: rgba(192, 132, 252, 0.05); padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(192, 132, 252, 0.1);">
+                        <input type="checkbox" id="manageConfirm" required />
+                        <label for="manageConfirm" style="font-size: 0.9rem; color: rgba(255,255,255,0.8);">I confirm
+                            this project is officially managed by our team and I have
+                            authority to apply for this collaboration.</label>
+                    </div>
+                </div>
+
+                <div style="margin-top: 4rem;">
+                    <button type="submit" class="submit-btn btn-primary" id="submitBtn"
+                        style="height: 60px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;">Submit
+                        Application</button>
+                    <p
+                        style="text-align: center; color: rgba(255,255,255,0.4); font-size: 0.85rem; margin-top: 1.5rem;">
+                        Our team typically reviews applications within 2-3 business days.</p>
+                </div>
+            </form>
+        </div>
+
+        <div class="apply-container success-state" id="successState">
+            <h2>Application Received! 🎉</h2>
+            <p>Application submitted successfully. Our team will review it.</p>
+            <a href="collabs.html" class="btn-primary"
+                style="display:inline-block; padding: 1rem 2rem; border-radius: 50px; text-decoration: none;">Return to
+                Content</a>
+        </div>
+    </main>
+
+    <footer class="footer" id="footer" style="margin-top: 0">
+        <div class="footer-inner">
+            <div class="footer-bottom"
+                style="border-top: none; justify-content: center; padding-top: 1rem; color: rgba(255,255,255,0.4);">
+                <span>© 2026 Pippin NFT. All rights reserved.</span>
+            </div>
+        </div>
+    </footer>
+
+    <div class="crop-modal" id="cropModal">
+        <div class="crop-container">
+            <h3 style="margin-bottom: 1.5rem; color: #fff;">Adjust Image</h3>
+            <div class="crop-area-wrapper">
+                <img id="imageToCrop" class="crop-image-element">
+            </div>
+            <div class="crop-controls">
+                <div class="zoom-slider-group">
+                    <label>ZOOM</label>
+                    <input type="range" class="crop-zoom-slider" id="zoomSlider" min="0" max="1" step="0.01"
+                        value="0" />
+                </div>
+                <div class="crop-actions">
+                    <button type="button" class="crop-btn crop-btn-cancel" id="cancelCrop">Cancel</button>
+                    <button type="button" class="crop-btn crop-btn-confirm" id="confirmCrop">Apply Crop</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js?v=3"></script>
+    <script src="main.js?v=3"></script>
+    <script src="apply.js?v=3"></script>
+</body>
+
+</html>
